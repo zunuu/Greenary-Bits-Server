@@ -41,6 +41,11 @@ async function run() {
         const orderCollection = client.db('greenary_bits_db').collection('order');
         const usersCollection = client.db('greenary_bits_db').collection('users');
 
+        app.get('/user', async (req, res) => {
+            const users = await usersCollection.find().toArray();
+            res.send(users);
+        })
+
         app.put('/user/:email', async (req, res) => {
             const email = req.params.email;
             const user = req.body;
