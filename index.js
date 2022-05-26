@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-
+const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -24,6 +24,19 @@ async function run() {
         console.log('db connected');
         const toolsCollection = client.db('greenary_bits_db').collection('tools');
         const orderCollection = client.db('greenary_bits_db').collection('order');
+        const usersCollection = client.db('greenary_bits_db').collection('users');
+
+        app.put('/user/:email', async (req, res) => {
+            const email = req.params.email;
+            const user = req.body;
+            const filter = { email: email };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: user,
+            };
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        })
 
 
         app.get('/tools', async (req, res) => {
