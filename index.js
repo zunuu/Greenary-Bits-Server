@@ -23,6 +23,7 @@ async function run() {
         await client.connect();
         console.log('db connected');
         const toolsCollection = client.db('greenary_bits_db').collection('tools');
+        const orderCollection = client.db('greenary_bits_db').collection('order');
 
 
         app.get('/tools', async (req, res) => {
@@ -40,6 +41,12 @@ async function run() {
             const tools = await toolsCollection.findOne(query);
             res.send(tools);
 
+        })
+
+        app.post('/order', async (req, res) => {
+            const order = req.body;
+            const result = await orderCollection.insertOne(order);
+            res.send(result);
         })
     }
 
