@@ -44,10 +44,10 @@ async function run() {
         })
         app.get('/order', async (req, res) => {
 
-            // const userEmail = req.query.userEmail;
-            //     const query = { userEmail: userEmail };
+
             const query = {};
-            const order = await orderCollection.findOne(query).toArray();
+            const cursor = orderCollection.find(query);
+            const order = await cursor.toArray();
             res.send(order);
 
 
