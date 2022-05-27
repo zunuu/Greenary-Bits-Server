@@ -40,10 +40,16 @@ async function run() {
         const toolsCollection = client.db('greenary_bits_db').collection('tools');
         const orderCollection = client.db('greenary_bits_db').collection('order');
         const usersCollection = client.db('greenary_bits_db').collection('users');
+        const reviewsCollection = client.db('greenary_bits_db').collection('reviews');
 
         app.post('/tools', async (req, res) => {
             const newtool = req.body;
             const result = await toolsCollection.insertOne(newtool)
+            res.send(result);
+        })
+        app.post('/reviews', async (req, res) => {
+            const reviews = req.body;
+            const result = await reviewsCollection.insertOne(reviews)
             res.send(result);
         })
 
@@ -108,6 +114,14 @@ async function run() {
             const cursor = toolsCollection.find(query);
             const tools = await cursor.toArray();
             res.send(tools);
+
+        })
+        app.get('/reviews', async (req, res) => {
+
+            const query = {};
+            const cursor = reviewsCollection.find(query);
+            const reviews = await cursor.toArray();
+            res.send(reviews);
 
         })
         app.get('/tools/:_id', async (req, res) => {
