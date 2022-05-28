@@ -151,6 +151,14 @@ async function run() {
 
         })
 
+
+        app.get('/order/:id', verifyJWT, async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const purchase = await orderCollection.findOne(query);
+            res.send(purchase);
+        })
+
         app.post('/order', async (req, res) => {
             const order = req.body;
             const result = await orderCollection.insertOne(order);
